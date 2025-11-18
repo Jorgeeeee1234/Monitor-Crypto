@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  microservicio-python:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: uvicorn app:app --host 0.0.0.0 --port ${PORT:-5002}
+    env_file:
+      - .env.example
+    ports:
+      - "5002:${PORT:-5002}"
+    restart: unless-stopped

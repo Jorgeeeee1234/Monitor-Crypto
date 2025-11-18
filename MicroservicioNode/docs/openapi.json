@@ -1,0 +1,421 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Monitor Crypto · Microservicio Node",
+    "version": "1.0.0",
+    "description": "API para la gestión de usuarios, alertas, favoritos e historial de la aplicación Monitor Crypto."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4001",
+      "description": "Servidor local"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Comprobar el estado del servicio",
+        "responses": {
+          "200": {
+            "description": "Servicio operativo"
+          }
+        }
+      }
+    },
+    "/api/users/register": {
+      "post": {
+        "summary": "Registro de nuevo usuario",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nombre": { "type": "string" },
+                  "apellido": { "type": "string" },
+                  "dni": { "type": "string" },
+                  "telefono": { "type": "string" },
+                  "username": { "type": "string" },
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string", "format": "password" },
+                  "rol": { "type": "string", "enum": ["admin", "cliente"], "default": "cliente" }
+                },
+                "required": ["nombre", "apellido", "dni", "telefono", "username", "email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Usuario registrado correctamente"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/api/users/login": {
+      "post": {
+        "summary": "Inicio de sesión",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string", "format": "email" },
+                  "password": { "type": "string", "format": "password" }
+                },
+                "required": ["email", "password"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Inicio de sesión exitoso"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/api/users/profile": {
+      "get": {
+        "summary": "Obtener perfil del usuario autenticado",
+        "security": [ { "BearerAuth": [] } ],
+        "responses": {
+          "200": {
+            "description": "Perfil obtenido"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/users": {
+      "get": {
+        "summary": "Listar usuarios (solo admin)",
+        "security": [ { "BearerAuth": [] } ],
+        "responses": {
+          "200": {
+            "description": "Lista de usuarios"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          }
+        }
+      }
+    },
+    "/api/users/{id}/role": {
+      "patch": {
+        "summary": "Cambiar rol de usuario (solo admin)",
+        "security": [ { "BearerAuth": [] } ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "ID del usuario"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "rol": { "type": "string", "enum": ["admin", "cliente"] }
+                },
+                "required": ["rol"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Rol actualizado" },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "delete": {
+        "summary": "Eliminar usuario (solo admin)",
+        "security": [ { "BearerAuth": [] } ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "ID del usuario"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Usuario eliminado" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/alerts": {
+      "get": {
+        "summary": "Listar alertas del usuario",
+        "security": [ { "BearerAuth": [] } ],
+        "responses": {
+          "200": { "description": "Lista de alertas" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      },
+      "post": {
+        "summary": "Crear una alerta",
+        "security": [ { "BearerAuth": [] } ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "symbol": { "type": "string" },
+                  "targetPrice": { "type": "number" }
+                },
+                "required": ["symbol", "targetPrice"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Alerta creada" },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/api/alerts/{id}": {
+      "delete": {
+        "summary": "Eliminar alerta",
+        "security": [ { "BearerAuth": [] } ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "ID de la alerta"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Alerta eliminada" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/favorites": {
+      "get": {
+        "summary": "Listar favoritos",
+        "security": [ { "BearerAuth": [] } ],
+        "responses": {
+          "200": { "description": "Lista de favoritos" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      },
+      "post": {
+        "summary": "Añadir favorito",
+        "security": [ { "BearerAuth": [] } ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "coinId": { "type": "string" },
+                  "symbol": { "type": "string" }
+                },
+                "required": ["coinId", "symbol"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Favorito añadido" },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/api/favorites/{id}": {
+      "delete": {
+        "summary": "Eliminar favorito",
+        "security": [ { "BearerAuth": [] } ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "ID del favorito"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Favorito eliminado" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/history": {
+      "get": {
+        "summary": "Obtener historial del usuario",
+        "security": [ { "BearerAuth": [] } ],
+        "responses": {
+          "200": { "description": "Historial" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      },
+      "post": {
+        "summary": "Añadir registro al historial",
+        "security": [ { "BearerAuth": [] } ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "symbol": { "type": "string" },
+                  "price": { "type": "number" }
+                },
+                "required": ["symbol", "price"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Registro guardado" },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "401": { "$ref": "#/components/responses/Unauthorized" }
+        }
+      }
+    },
+    "/api/history/user/{id}": {
+      "get": {
+        "summary": "Obtener historial de un usuario (solo admin)",
+        "security": [ { "BearerAuth": [] } ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "ID del usuario"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Historial del usuario" },
+          "401": { "$ref": "#/components/responses/Unauthorized" },
+          "403": { "$ref": "#/components/responses/Forbidden" },
+          "404": { "$ref": "#/components/responses/NotFound" }
+        }
+      }
+    },
+    "/api/analysis/prices": {
+      "get": {
+        "summary": "Consultar precios de criptomonedas (via microservicio Python)",
+        "parameters": [
+          { "name": "vs", "in": "query", "schema": { "type": "string" } },
+          { "name": "per_page", "in": "query", "schema": { "type": "integer" } },
+          { "name": "page", "in": "query", "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Listado de monedas y precios" },
+          "502": { "$ref": "#/components/responses/BadGateway" }
+        }
+      }
+    },
+    "/api/analysis/coin/{id}": {
+      "get": {
+        "summary": "Obtener detalle de una moneda (via microservicio Python)",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Identificador de la moneda en CoinGecko"
+          },
+          { "name": "vs", "in": "query", "schema": { "type": "string" } },
+          { "name": "days", "in": "query", "schema": { "type": "string" } },
+          { "name": "interval", "in": "query", "schema": { "type": "string" } }
+        ],
+        "responses": {
+          "200": { "description": "Detalle de la moneda" },
+          "502": { "$ref": "#/components/responses/BadGateway" }
+        }
+      }
+    },
+    "/api/analysis/{symbol}": {
+      "get": {
+        "summary": "Analizar una moneda (via microservicio Python)",
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Símbolo de la moneda"
+          }
+        ],
+        "responses": {
+          "200": { "description": "Resultado del análisis" },
+          "502": { "$ref": "#/components/responses/BadGateway" }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Solicitud mal formada"
+      },
+      "Unauthorized": {
+        "description": "Token de autenticación no proporcionado o inválido"
+      },
+      "Forbidden": {
+        "description": "No tiene permisos para acceder al recurso"
+      },
+      "NotFound": {
+        "description": "Recurso no encontrado"
+      },
+      "BadGateway": {
+        "description": "Error comunicando con el microservicio Python"
+      }
+    }
+  }
+}

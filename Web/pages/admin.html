@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel de administración · Monitor Crypto</title>
+  <link rel="stylesheet" href="../css/principal.css" />
+</head>
+<body class="admin-page">
+  <header>
+    <h1>Panel de administración</h1>
+    <nav>
+      <a href="principal.html" class="nav-btn admin-nav admin-nav--home">Inicio</a>
+      <a href="#" id="btn-mongo" class="nav-btn admin-nav" data-target="mongo">MongoDB</a>
+      <a href="#" id="btn-postgres" class="nav-btn admin-nav" data-target="postgres">PostgreSQL</a>
+      <a href="#" id="btn-tables" class="nav-btn admin-nav" data-target="tables">Ver tablas</a>
+      <a href="#" id="btn-users" class="nav-btn admin-nav" data-target="users">Usuarios</a>
+      <a href="#" id="btn-history" class="nav-btn admin-nav" data-target="history">Historial Usuarios</a>
+      <a href="#" id="btn-favorites-admin" class="nav-btn admin-nav" data-target="favorites">Favoritos</a>
+      <a href="#" id="btn-functionalities" class="nav-btn admin-nav" data-target="functionalities">Funcionalidades</a>
+      <a href="#" id="logoutBtn" class="nav-btn">Cerrar sesión</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="admin-toolbar">
+      <a href="principal.html" class="admin-return">
+        <span class="admin-return__icon">&#8592;</span>
+        <span class="admin-return__label">Volver a <strong>Monitor<span>Crypto</span></strong></span>
+      </a>
+    </div>
+
+    <section id="mongo" class="section admin-section active">
+      <h2>Estado de MongoDB</h2>
+      <div class="admin-card-grid">
+        <article class="admin-card">
+          <h3>Resumen de colecciones</h3>
+          <p>Información relevante de la instancia operativa de MongoDB.</p>
+          <dl class="admin-metrics" id="mongoStats"></dl>
+        </article>
+        <article class="admin-card">
+          <h3>Últimas operaciones</h3>
+          <p>Registro de operaciones recientes para auditoría y diagnóstico.</p>
+          <ul id="mongoOpsList" class="admin-list admin-list--compact"></ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="postgres" class="section admin-section">
+      <h2>Estado de PostgreSQL</h2>
+      <div class="admin-card-grid">
+        <article class="admin-card">
+          <h3>Resumen de tablas</h3>
+          <p>Estadísticas operativas de la base de datos relacional utilizada por el proyecto.</p>
+          <dl class="admin-metrics" id="pgStats"></dl>
+        </article>
+        <article class="admin-card">
+          <h3>Tareas programadas</h3>
+          <p>Seguimiento de jobs programados, tareas de mantenimiento y cron activos.</p>
+          <ul id="pgJobsList" class="admin-timeline"></ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="tables" class="section admin-section">
+      <h2>Ver tablas y colecciones</h2>
+      <div class="admin-card-grid admin-card-grid--wide">
+        <article class="admin-card admin-card--tables">
+          <header class="admin-card__head">
+            <h3>MongoDB</h3>
+            <p>Explora las colecciones almacenadas en la base documental.</p>
+          </header>
+          <div class="admin-table-layout">
+            <div class="admin-table-selector" id="mongoCollectionsWrapper">
+              <div class="admin-selector-head">
+                <h4>Colecciones</h4>
+              </div>
+              <div class="admin-selector-body" id="mongoCollections">
+                <p class="admin-empty">Cargando colecciones...</p>
+              </div>
+            </div>
+            <div class="admin-table-preview">
+              <div class="admin-table-preview__header">
+                <h4 id="mongoPreviewTitle">Selecciona una colección</h4>
+                <span id="mongoPreviewMeta" class="admin-preview-meta"></span>
+              </div>
+              <div id="mongoTablePreview" class="admin-table-preview__body admin-empty">No hay datos para mostrar.</div>
+            </div>
+          </div>
+        </article>
+
+        <article class="admin-card admin-card--tables">
+          <header class="admin-card__head">
+            <h3>PostgreSQL</h3>
+            <p>Consulta las tablas relacionales que utiliza el ecosistema.</p>
+          </header>
+          <div class="admin-table-layout">
+            <div class="admin-table-selector" id="postgresTablesWrapper">
+              <div class="admin-selector-head">
+                <h4>Tablas</h4>
+              </div>
+              <div class="admin-selector-body" id="postgresTables">
+                <p class="admin-empty">Cargando tablas...</p>
+              </div>
+            </div>
+            <div class="admin-table-preview">
+              <div class="admin-table-preview__header">
+                <h4 id="postgresPreviewTitle">Selecciona una tabla</h4>
+                <span id="postgresPreviewMeta" class="admin-preview-meta"></span>
+              </div>
+              <div id="postgresTablePreview" class="admin-table-preview__body admin-empty">No hay datos para mostrar.</div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="users" class="section admin-section">
+      <h2>Usuarios registrados</h2>
+      <ul id="usersList" class="admin-list">Cargando usuarios...</ul>
+    </section>
+
+    <section id="history" class="section admin-section">
+      <h2>Historial Usuarios</h2>
+      <div class="admin-card-grid admin-card-grid--wide">
+        <article class="admin-card admin-card--history-intro">
+          <button type="button" class="admin-card__shortcut" id="goToFavoritesBtn" title="Ver favoritos">
+            ★
+          </button>
+          <header class="history-card__header">
+            <h3>Selecciona un usuario</h3>
+            <p>Consulta sus datos personales y su actividad reciente.</p>
+          </header>
+          <div class="history-card__selector">
+            <label for="historyUserSelect">Usuarios registrados</label>
+            <select id="historyUserSelect">
+              <option value="">Selecciona un usuario</option>
+            </select>
+          </div>
+          <dl class="profile-summary history-profile-summary">
+            <div>
+              <dt>Nombre</dt>
+              <dd id="historyProfileName">-</dd>
+            </div>
+            <div>
+              <dt>Apellido</dt>
+              <dd id="historyProfileSurname">-</dd>
+            </div>
+            <div>
+              <dt>Usuario</dt>
+              <dd id="historyProfileUsername">-</dd>
+            </div>
+            <div>
+              <dt>Email</dt>
+              <dd id="historyProfileEmail">-</dd>
+            </div>
+            <div>
+              <dt>Telefono</dt>
+              <dd id="historyProfilePhone">-</dd>
+            </div>
+            <div>
+              <dt>DNI</dt>
+              <dd id="historyProfileDni">-</dd>
+            </div>
+            <div>
+              <dt>Rol</dt>
+              <dd id="historyProfileRole">-</dd>
+            </div>
+            <div>
+              <dt>Registro</dt>
+              <dd id="historyProfileRegisteredAt">-</dd>
+            </div>
+          </dl>
+        </article>
+      </div>
+    </section>
+
+    <section id="favorites" class="section admin-section">
+      <h2>Favoritos Usuarios</h2>
+      <div class="admin-card-grid admin-card-grid--wide">
+        <article class="admin-card admin-card--favorites-intro">
+          <header class="favorites-card__header">
+            <h3>Selecciona un usuario</h3>
+            <p>Revisa su lista de monedas marcadas como favoritas.</p>
+          </header>
+          <div class="favorites-card__selector">
+            <label for="favoritesUserSelect">Usuarios registrados</label>
+            <select id="favoritesUserSelect">
+              <option value="">Selecciona un usuario</option>
+            </select>
+          </div>
+          <div class="favorites-card__summary" id="favoritesSummary">
+            <p class="favorites-card__hint">Selecciona un usuario para ver sus favoritos.</p>
+          </div>
+        </article>
+        <article class="admin-card admin-card--favorites-feed">
+          <ul id="favoritesList" class="favorites-list">
+            <li class="favorites-empty">Selecciona un usuario para ver sus favoritos.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="functionalities" class="section admin-section">
+      <h2>Funcionalidades</h2>
+      <p class="section-subtitle">Explora las herramientas clave del panel administrativo.</p>
+      <div class="functionalities-grid">
+        <article class="function-card">
+          <header class="function-card__header">
+            <span class="function-card__icon">⭐</span>
+            <div>
+              <h3>Favoritos KPIs</h3>
+              <p>Monitoriza el uso de listas guardadas por parte de los usuarios.</p>
+            </div>
+          </header>
+          <div class="function-card__body">
+            <ul class="function-metrics">
+              <li>
+                <span class="metric-label">Favoritos totales</span>
+                <span class="metric-value" id="kpiFavoritesTotal">-</span>
+              </li>
+              <li>
+                <span class="metric-label">Promedio por usuario</span>
+                <span class="metric-value" id="kpiFavoritesAvg">-</span>
+              </li>
+              <li>
+                <span class="metric-label">Top criptomoneda</span>
+                <span class="metric-value" id="kpiFavoritesTop">-</span>
+              </li>
+            </ul>
+          </div>
+          <footer class="function-card__footer">
+            <button type="button" class="function-card__action" id="exportFavoritesPdfBtn">Exportar PDF</button>
+          </footer>
+        </article>
+        <article class="function-card">
+          <header class="function-card__header">
+            <span class="function-card__icon">🩺</span>
+            <div>
+              <h3>Salud de la plataforma</h3>
+              <p>Vista rápida del estado de los microservicios y datos consultados.</p>
+            </div>
+          </header>
+          <div class="function-card__body">
+            <ul class="function-metrics">
+              <li>
+                <span class="metric-label">Latencia media APIs</span>
+                <span class="metric-value" id="kpiLatencyAvg">-</span>
+              </li>
+              <li>
+                <span class="metric-label">Colecciones consultadas</span>
+                <span class="metric-value" id="kpiCollectionsQueried">-</span>
+              </li>
+              <li>
+                <span class="metric-label">Errores recientes</span>
+                <span class="metric-value" id="kpiRecentErrors">-</span>
+              </li>
+            </ul>
+          </div>
+          <footer class="function-card__footer">
+            <button type="button" class="function-card__action" id="exportHealthPdfBtn">Exportar PDF</button>
+          </footer>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <script src="../js/admin.js"></script>
+</body>
+</html>
+
+

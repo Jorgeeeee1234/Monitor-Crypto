@@ -1,0 +1,52 @@
+Manual activación de todo sin docker:
+
+Para activar y desactivar tanto el microservicio de Node como el de ApiGateway:
+Se activan con: npm run dev (Estando siempre en cd ApiGateway o cd MicroservicioNode)
+Y se desactivan con Control + C en sus terminales
+
+Para activar mongoDB sin docker simplemente haríamos mongod en una terminal de powershell admin
+
+Para activar el MicroservicioPython
+Microservicio Python: 
+cd MicroservicioPython
+.\venv\Scripts\Activate.ps1
+uvicorn app:app --reload --host 127.0.0.1 --port 5002
+
+Para desactivarlo sería:
+Control + C en powershell de MicroservicioPython
+deactivate para salir del venv
+
+Para que funcione la web:
+cd web
+python -m http.server 8080
+
+Para salir de la web
+Control + C
+
+Los links:
+http://localhost:8080/pages/login.html
+http://localhost:5000/health
+http://127.0.0.1:5002/health
+http://localhost:4001/health
+
+Manual de activación con docker:
+Para borrar: 
+docker compose down
+
+Para iniciar:
+docker compose up --build
+
+Para levantarlo después de Control + C
+docker compose up
+docker compose up -d        Cualquira de estos dos los levanta recreandolos si la configuración cambió
+docker compose start        Arranca los contenedores que quedaron retenidos en el mismo estado
+
+También se puede parar con:
+docker compose stop
+
+Importante:
+Si se quire usar la opción manual:
+Se debe entrar en los .env tanto de ApiGateway como de MicroservicioNode y leer los comentarios
+
+Cadena de conexión de mis microservicios: postgresql:
+//monitor:monitorpass@localhost:5432/monitorcrypto

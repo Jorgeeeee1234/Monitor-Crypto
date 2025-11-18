@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitor Crypto</title>
+  <link rel="stylesheet" href="../css/principal.css" />
+</head>
+<body>
+  <header>
+    <h1 class="brand-logo">Monitor<span>Crypto</span></h1>
+    <nav>
+      <a href="#" class="nav-btn" id="btn-admin" style="display: none;">Admin</a>
+      <a href="#" class="nav-btn" id="btn-home" data-target="home">Inicio</a>
+      <a href="#" class="nav-btn" id="btn-analys" data-target="analys">Analisis</a>
+      <a href="#" class="nav-btn" id="btn-alerts" data-target="alerts">Alertas</a>
+      <a href="#" class="nav-btn" id="btn-favorites" data-target="favorites">Favoritos</a>
+      <a href="#" class="nav-btn" id="btn-dashboard" data-target="dashboard">Dashboard</a>
+      <a href="#" class="nav-btn" id="btn-pnl" data-target="pnl">Simulador PnL</a>
+      <a href="#" class="nav-btn" id="btn-calendar" data-target="calendar">Calendario</a>
+      <a href="#" class="nav-btn" id="btn-profile" data-target="profile">Perfil</a>
+      <a href="#" id="logoutBtn">Cerrar sesion</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="pnl" class="section">
+      <div class="section-title-band">
+        <h2>Simulador de PnL &amp; Comisiones</h2>
+      </div>
+      <p class="section-headline__subtitle">Evalúa el rendimiento de tu operación contemplando todos los costes asociados.</p>
+      <div class="pnl-grid">
+        <article class="pnl-card pnl-card--wide">
+          <header class="pnl-card__header">
+            <h3>Configuración de la operación</h3>
+            <p>Selecciona la criptomoneda y define los parámetros de compra y venta.</p>
+          </header>
+          <div class="pnl-form-group">
+            <label for="pnlCoinSelect">Criptomoneda</label>
+            <select id="pnlCoinSelect">
+              <option value="">Selecciona una criptomoneda</option>
+            </select>
+          </div>
+          <div class="pnl-params">
+            <div class="pnl-form-group">
+              <label for="pnlQty">Cantidad (qty)</label>
+              <input type="number" id="pnlQty" min="0" step="any" placeholder="Ej: 1.5" />
+            </div>
+            <div class="pnl-form-group">
+              <label for="pnlBuyPrice">Precio de compra previsto</label>
+              <input type="number" id="pnlBuyPrice" min="0" step="any" placeholder="€" />
+            </div>
+            <div class="pnl-form-group">
+              <label for="pnlSellPrice">Precio de venta previsto</label>
+              <input type="number" id="pnlSellPrice" min="0" step="any" placeholder="€" />
+            </div>
+          </div>
+        </article>
+
+        <article class="pnl-card pnl-card--price">
+          <header class="pnl-card__header">
+            <h3>Precio actual</h3>
+            <p>Datos procedentes de la última actualización del mercado.</p>
+          </header>
+          <div class="pnl-price-value" id="pnlPriceValue">—</div>
+          <p class="pnl-price-updated" id="pnlPriceUpdated">Selecciona una criptomoneda para ver su precio actual.</p>
+        </article>
+
+        <article class="pnl-card">
+          <header class="pnl-card__header">
+            <h3>Comisiones de compra</h3>
+            <p>Introduce los costes asociados a la entrada de la operación.</p>
+          </header>
+          <div class="pnl-params">
+            <div class="pnl-form-group">
+              <label for="pnlBuyExchangePct">% comisión exchange</label>
+              <input type="number" id="pnlBuyExchangePct" min="0" step="any" placeholder="%" />
+            </div>
+            <div class="pnl-form-group">
+              <label for="pnlBuyConversionPct">% conversión</label>
+              <input type="number" id="pnlBuyConversionPct" min="0" step="any" placeholder="%" />
+            </div>
+            <div class="pnl-form-group">
+              <label for="pnlBuySpreadPct">Spread estimado %</label>
+              <input type="number" id="pnlBuySpreadPct" min="0" step="any" placeholder="%" />
+            </div>
+            <div class="pnl-form-group">
+              <label for="pnlBuyFixedFee">Fijo por operación ($)</label>
+              <input type="number" id="pnlBuyFixedFee" min="0" step="any" placeholder="€" />
+            </div>
+            <div class="pnl-form-group">
+              <label for="pnlBuyNetworkCoin">Fee de red (depósito) en moneda</label>
+              <input type="number" id="pnlBuyNetworkCoin" min="0" step="any" placeholder="Cantidad en la cripto" />
+            </div>
+          </div>
+        </article>
+
+        <article class="pnl-card">
+          <header class="pnl-card__header">
+            <h3>Comisiones de venta &amp; salida</h3>
+            <p>Costes asociados a la salida de la posición, incluidos impuestos.</p>
+          </header>
+          <div class="pnl-params">
+            <div class="pnl-form-group">
+              <label for="pnlSellExchangePct">% comisión exchange</label>
+              <input type="number" id="pnlSellExchangePct" min="0" step="any" placeholder="%" />
+            </div>
+            <div class="pnl-form-group">
+              <label for="pnlSellSlippagePct">% slippage</label>
+              <input type="number" id="pnlSellSlippagePct" min="0" step="any" placeholder="%" />
+            </div>
+            <div class="pnl-form-group">
+              <label for="pnlSellTaxesPct">% impuestos</label>
+              <input type="number" id="pnlSellTaxesPct" min="0" step="any" placeholder="%" />
+            </div>
+            <div class="pnl-form-group">
+              <label for="pnlSellFixedFee">Fijo por operación ($)</label>
+              <input type="number" id="pnlSellFixedFee" min="0" step="any" placeholder="€" />
+            </div>
+            <div class="pnl-form-group">
+              <label for="pnlSellNetworkCoin">Fee de red (retiro) en moneda</label>
+              <input type="number" id="pnlSellNetworkCoin" min="0" step="any" placeholder="Cantidad en la cripto" />
+            </div>
+          </div>
+          <div class="pnl-derivatives">
+            <label>
+              <input type="checkbox" id="pnlDerivToggle" />
+              Incluir derivados / funding
+            </label>
+            <div class="pnl-params pnl-params--condensed">
+              <div class="pnl-form-group">
+                <label for="pnlFundingRatePct">Funding rate % por periodo</label>
+                <input type="number" id="pnlFundingRatePct" min="0" step="any" placeholder="%" />
+              </div>
+              <div class="pnl-form-group">
+                <label for="pnlFundingPeriods">Número de periodos</label>
+                <input type="number" id="pnlFundingPeriods" min="0" step="1" placeholder="Ej: 3" />
+              </div>
+            </div>
+          </div>
+          <div class="pnl-form-group pnl-form-group--roi">
+            <label for="pnlTargetRoiPct">ROI objetivo %</label>
+            <input type="number" id="pnlTargetRoiPct" min="0" step="any" placeholder="Ej: 15" />
+          </div>
+        </article>
+
+        <article class="pnl-card pnl-card--results">
+          <header class="pnl-card__header">
+            <h3>Resultados estimados</h3>
+            <p>Incluye todos los costes introducidos para mostrar un balance completo.</p>
+          </header>
+          <div class="pnl-results-grid">
+            <div class="pnl-result-card">
+              <span class="label">Coste total de entrada</span>
+              <span class="value" id="pnlCostEntry">—</span>
+            </div>
+            <div class="pnl-result-card">
+              <span class="label">Proceeds brutos de venta</span>
+              <span class="value" id="pnlGrossProceeds">—</span>
+            </div>
+            <div class="pnl-result-card">
+              <span class="label">Comisiones de venta</span>
+              <span class="value" id="pnlSellFees">—</span>
+            </div>
+            <div class="pnl-result-card">
+              <span class="label">Proceeds netos</span>
+              <span class="value" id="pnlNetProceeds">—</span>
+            </div>
+            <div class="pnl-result-card pnl-result-card--pnl">
+              <span class="label">PnL ($)</span>
+              <span class="value" id="pnlPnLValue">—</span>
+              <span class="sub-value" id="pnlPnLPercent">—</span>
+            </div>
+            <div class="pnl-result-card">
+              <span class="label">Break-even</span>
+              <span class="value" id="pnlBreakEven">—</span>
+            </div>
+            <div class="pnl-result-card">
+              <span class="label">Precio objetivo ROI</span>
+              <span class="value" id="pnlTargetPrice">—</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="pnl-card pnl-card--actions">
+          <header class="pnl-card__header">
+            <h3>Acciones</h3>
+            <p>Guarda tus escenarios o exporta los resultados para compartirlos.</p>
+          </header>
+          <div class="pnl-actions">
+            <button type="button" id="pnlCalculateBtn">Calcular</button>
+            <button type="button" id="pnlSaveScenarioBtn">Guardar escenario</button>
+            <button type="button" id="pnlDuplicateBtn" class="ghost-button">Duplicar último</button>
+            <button type="button" id="pnlClearBtn" class="ghost-button">Limpiar</button>
+            <button type="button" id="pnlExampleBtn" class="ghost-button">Cargar ejemplo</button>
+            <button type="button" id="pnlExportBtn" class="ghost-button">Exportar CSV</button>
+            <button type="button" id="pnlPrintBtn" class="ghost-button">Imprimir / PDF</button>
+          </div>
+          <p id="pnlStatus" class="form-status"></p>
+        </article>
+      </div>
+    </section>
+
+    <section id="profile" class="section">
+      <div class="section-title-band">
+        <h2>Tu perfil</h2>
+      </div>
+      <p class="section-headline__subtitle">Consulta tus datos y actualiza tu información básica.</p>
+      <div class="profile-grid">
+        <article class="profile-card">
+          <header class="profile-card__header">
+            <h3>Resumen</h3>
+            <p>Datos principales asociados a tu cuenta.</p>
+          </header>
+          <dl class="profile-summary">
+            <div>
+              <dt>Nombre</dt>
+              <dd id="profileName">-</dd>
+            </div>
+            <div>
+              <dt>Apellido</dt>
+              <dd id="profileSurname">-</dd>
+            </div>
+            <div>
+              <dt>Usuario</dt>
+              <dd id="profileUsername">-</dd>
+            </div>
+            <div>
+              <dt>Email</dt>
+              <dd id="profileEmail">-</dd>
+            </div>
+            <div>
+              <dt>Teléfono</dt>
+              <dd id="profilePhone">-</dd>
+            </div>
+            <div>
+              <dt>DNI</dt>
+              <dd id="profileDni">-</dd>
+            </div>
+            <div>
+              <dt>Rol</dt>
+              <dd id="profileRole">-</dd>
+            </div>
+            <div>
+              <dt>Registro</dt>
+              <dd id="profileRegisteredAt">-</dd>
+            </div>
+          </dl>
+        </article>
+
+        <article class="profile-card">
+          <header class="profile-card__header">
+            <h3>Editar datos</h3>
+            <p>Actualiza tu nombre, usuario o teléfono. El resto de campos son administrados por soporte.</p>
+          </header>
+          <form id="profileForm" class="dashboard-form">
+            <input type="text" id="profileInputNombre" name="nombre" placeholder="Nombre" maxlength="80" required />
+            <input type="text" id="profileInputApellido" name="apellido" placeholder="Apellido" maxlength="80" required />
+            <input type="text" id="profileInputUsername" name="username" placeholder="Nombre de usuario" maxlength="60" required />
+            <input type="tel" id="profileInputTelefono" name="telefono" placeholder="Teléfono" maxlength="25" required />
+            <div class="form-actions">
+              <button type="submit" id="profileSubmitBtn">Guardar cambios</button>
+              <button type="button" id="profileResetBtn" class="ghost-button">Restablecer</button>
+              <span id="profileStatus" class="form-status"></span>
+            </div>
+          </form>
+        </article>
+      </div>
+    </section>
+
+    <section id="calendar" class="section">
+      <div class="section-title-band">
+        <h2>Calendario personal</h2>
+      </div>
+      <p class="section-headline__subtitle">Selecciona un mes y añade notas día a día para organizarte mejor.</p>
+      <div class="calendar-wrapper">
+        <article class="db-card calendar-card">
+          <header class="db-card__header">
+            <h3>Calendario</h3>
+            <p>Elige un mes y gestiona tus anotaciones diarias.</p>
+          </header>
+          <div class="calendar-controls">
+            <div class="calendar-selectors">
+              <div class="calendar-selector">
+                <label for="calendarMonthSelect">Mes</label>
+                <select id="calendarMonthSelect"></select>
+              </div>
+              <div class="calendar-selector">
+                <label for="calendarYearInput">Año</label>
+                <input type="number" id="calendarYearInput" min="1970" max="2100" />
+              </div>
+              <div class="calendar-nav-buttons">
+                <button type="button" id="calendarPrevMonth" class="ghost-button">&larr;</button>
+                <button type="button" id="calendarNextMonth" class="ghost-button">&rarr;</button>
+              </div>
+            </div>
+          </div>
+          <div class="calendar-grid" id="calendarGrid"></div>
+          <div class="calendar-detail">
+            <h4>Notas del <span id="calendarSelectedDateLabel">-</span></h4>
+            <form id="calendarNoteForm" class="dashboard-form">
+              <input type="text" id="calendarNoteTitle" placeholder="Título (opcional)" maxlength="120" />
+              <textarea id="calendarNoteContent" placeholder="Escribe tu nota..." rows="3" required></textarea>
+              <div class="form-actions">
+                <button type="submit" id="calendarNoteSubmit">Guardar nota</button>
+                <span id="calendarNoteStatus" class="form-status"></span>
+              </div>
+            </form>
+            <ul id="calendarNotesList" class="notes-list"></ul>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="dashboard" class="section">
+      <div class="section-title-band">
+        <h2>Dashboard personal</h2>
+      </div>
+      <p class="section-headline__subtitle">Organiza tus ideas, haz cálculos rápidos y mantén tu productividad dentro de la app.</p>
+      <div class="dashboard-grid">
+        <article class="db-card">
+          <header class="db-card__header">
+            <h3>Notas personales</h3>
+            <p>Guarda recordatorios o ideas y recupéralos en cualquier momento.</p>
+          </header>
+          <form id="noteForm" class="dashboard-form">
+            <input type="text" id="noteTitle" name="title" placeholder="Título (opcional)" maxlength="120" />
+            <textarea id="noteContent" name="content" placeholder="Escribe tu nota..." rows="4" required></textarea>
+            <div class="form-actions">
+              <button type="submit" id="noteSubmitBtn">Guardar nota</button>
+              <button type="button" id="noteCancelEdit" class="ghost-button hidden">Cancelar edición</button>
+              <span id="notesStatus" class="form-status"></span>
+            </div>
+          </form>
+          <ul id="notesList" class="notes-list"></ul>
+        </article>
+
+        <article class="db-card">
+          <header class="db-card__header">
+            <h3>Calculadora rápida</h3>
+            <p>Resuelve operaciones básicas sin abandonar la aplicación.</p>
+          </header>
+          <div class="calculator">
+            <div class="calculator-display" id="calculatorDisplay">0</div>
+            <div class="calculator-buttons" id="calculatorKeys">
+              <button data-action="clear">C</button>
+              <button data-action="sign">±</button>
+              <button data-action="percent">%</button>
+              <button data-operator="divide">÷</button>
+
+              <button data-value="7">7</button>
+              <button data-value="8">8</button>
+              <button data-value="9">9</button>
+              <button data-operator="multiply">×</button>
+
+              <button data-value="4">4</button>
+              <button data-value="5">5</button>
+              <button data-value="6">6</button>
+              <button data-operator="subtract">−</button>
+
+              <button data-value="1">1</button>
+              <button data-value="2">2</button>
+              <button data-value="3">3</button>
+              <button data-operator="add">+</button>
+
+              <button data-value="0" class="span-two">0</button>
+              <button data-value=".">.</button>
+              <button data-action="equals">=</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="db-card">
+          <header class="db-card__header">
+            <h3>Tareas rápidas</h3>
+            <p>Gestiona pequeños pendientes y mantenlos sincronizados en este navegador.</p>
+          </header>
+          <form id="taskForm" class="dashboard-form">
+            <input type="text" id="taskInput" placeholder="Nueva tarea..." maxlength="140" required />
+            <div class="form-actions">
+              <button type="submit">Añadir tarea</button>
+              <button type="button" id="taskClearCompleted" class="ghost-button">Limpiar completadas</button>
+            </div>
+          </form>
+          <ul id="tasksList" class="tasks-list"></ul>
+        </article>
+
+        <article class="db-card">
+          <header class="db-card__header">
+            <h3>Temporizador de foco</h3>
+            <p>Define una sesión de trabajo corta y mantén la concentración.</p>
+          </header>
+          <div class="timer-controls">
+            <div class="timer-display" id="focusTimerDisplay">25:00</div>
+            <div class="timer-settings">
+              <label for="timerMinutes">Duración (min):</label>
+              <input type="number" id="timerMinutes" min="1" max="120" value="25" />
+            </div>
+            <div class="timer-actions">
+              <button type="button" id="timerStart">Iniciar</button>
+              <button type="button" id="timerPause">Pausar</button>
+              <button type="button" id="timerReset" class="ghost-button">Reiniciar</button>
+            </div>
+            <p id="timerStatus" class="form-status"></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="home" class="section active">
+      <div class="section-title-band">
+        <h2>Precios de criptomonedas</h2>
+      </div>
+      <div class="section-headline__actions section-actions">
+        <button type="button" id="homeSyncBtn" class="sync-button">Actualizar precios</button>
+        <span id="homeSyncStatus" class="sync-status"></span>
+      </div>
+
+      <div class="controls">
+        <input type="text" id="searchInput" placeholder="Buscar por nombre o simbolo..." />
+        <select id="filterSelect">
+          <option value="all">Todas</option>
+          <option value="positive">Solo subidas</option>
+          <option value="negative">Solo bajadas</option>
+        </select>
+        <select id="sortSelect">
+          <option value="none">Ordenar por...</option>
+          <option value="price-desc">Precio: mayor a menor</option>
+          <option value="price-asc">Precio: menor a mayor</option>
+          <option value="change-desc">Cambio 24h: mayor a menor</option>
+          <option value="change-asc">Cambio 24h: menor a mayor</option>
+        </select>
+      </div>
+
+      <div id="prices"></div>
+      <div id="pagination"></div>
+      <p id="lastUpdate"></p>
+    </section>
+
+    <div id="crypto-modal" class="modal hidden">
+      <div class="modal-content">
+        <button class="modal-close" id="modalClose">&times;</button>
+        <div class="modal-header">
+          <img id="modalIcon" class="coin-icon" alt="icono" />
+          <h3 id="modalTitle">Detalle</h3>
+        </div>
+        <div class="modal-body">
+          <p><strong>Precio:</strong> <span id="modalPrice">-</span></p>
+          <p><strong>Market Cap:</strong> <span id="modalCap">-</span></p>
+          <p><strong>Volumen 24h:</strong> <span id="modalVol">-</span></p>
+          <p><strong>ATH:</strong> <span id="modalAth">-</span></p>
+
+          <div class="modal-metrics">
+            <span class="badge" id="modal1h">1h: -</span>
+            <span class="badge" id="modal24h">24h: -</span>
+            <span class="badge" id="modal7d">7d: -</span>
+          </div>
+
+          <div id="modalDescription" class="modal-description"></div>
+        </div>
+      </div>
+    </div>
+
+    <section id="favorites" class="section">
+      <div class="section-title-band">
+        <h2>Tus criptomonedas favoritas</h2>
+      </div>
+      <div id="favList"></div>
+    </section>
+
+    <section id="analys" class="section">
+      <div class="section-title-band">
+        <h2>Analisis de tendencias</h2>
+      </div>
+      <div class="sync-controls">
+        <button type="button" id="analysisSyncBtn">Actualizar precios</button>
+        <button type="button" id="analysisHistoryBtn">Actualizar historico (90 dias)</button>
+        <select id="analysisSyncCoin">
+          <option value="">Selecciona una criptomoneda</option>
+        </select>
+        <button type="button" id="analysisSingleHistoryBtn">Actualizar historico (90 dias - 1 moneda)</button>
+        <span id="analysisSyncStatus" class="sync-status"></span>
+      </div>
+      <div class="analysis-controls">
+        <select id="analysisSymbol">
+          <option value="">Selecciona una criptomoneda</option>
+        </select>
+        <select id="analysisDays">
+          <option value="7">Ultimos 7 dias</option>
+          <option value="14">14 dias</option>
+          <option value="30">30 dias</option>
+          <option value="90">90 dias</option>
+        </select>
+        <button id="analysisBtn" type="button">Analizar</button>
+      </div>
+      <div id="analysisSummary" class="analysis-summary hidden">
+        <div class="analysis-card">
+          <span class="label">Precio actual</span>
+          <span class="value" id="analysisPrice">-</span>
+        </div>
+        <div class="analysis-card">
+          <span class="label">Promedio periodo</span>
+          <span class="value" id="analysisAverage">-</span>
+        </div>
+        <div class="analysis-card">
+          <span class="label">Maximo</span>
+          <span class="value" id="analysisMax">-</span>
+        </div>
+        <div class="analysis-card">
+          <span class="label">Minimo</span>
+          <span class="value" id="analysisMin">-</span>
+        </div>
+        <div class="analysis-card">
+          <span class="label">Volatilidad</span>
+          <span class="value" id="analysisVolatility">-</span>
+        </div>
+        <div class="analysis-card">
+          <span class="label">Cambio 24h</span>
+          <span class="value" id="analysisChange24h">-</span>
+        </div>
+        <div class="analysis-card">
+          <span class="label">Cambio 7d</span>
+          <span class="value" id="analysisChange7d">-</span>
+        </div>
+        <div class="analysis-card">
+          <span class="label">Tendencia</span>
+          <span class="value" id="analysisTrend">-</span>
+        </div>
+        <div class="analysis-card">
+          <span class="label">Ultima actualizacion</span>
+          <span class="value" id="analysisUpdated">-</span>
+        </div>
+      </div>
+      <div id="analysisChartWrapper" class="analysis-chart-wrapper hidden">
+        <canvas id="analysisChart" height="220"></canvas>
+      </div>
+      <p id="analysisMessage" class="analysis-message"></p>
+    </section>
+
+    <section id="alerts" class="section">
+      <div class="section-title-band">
+        <h2>Alertas de precio</h2>
+      </div>
+      <div class="section-headline section-headline--meta">
+        <p class="section-headline__subtitle">Define avisos locales usando los datos ya sincronizados.</p>
+        <div class="section-headline__actions">
+          <span class="badge" id="alertsSummary">0 alertas activas</span>
+        </div>
+      </div>
+
+      <div class="alerts-grid">
+        <article class="alerts-card">
+          <header class="alerts-card__header">
+            <h3>Nueva alerta</h3>
+            <p>Selecciona la moneda, condicion y valor objetivo.</p>
+          </header>
+          <form id="alertForm" class="alerts-form">
+            <div class="alerts-field">
+              <label for="alertCoin">Criptomoneda</label>
+              <select id="alertCoin">
+                <option value="">Selecciona una criptomoneda</option>
+              </select>
+            </div>
+            <p class="alerts-hint" id="alertCurrentPrice">Selecciona una criptomoneda para ver su precio actual.</p>
+            <div class="alerts-row">
+              <div class="alerts-field">
+                <label for="alertCondition">Condicion</label>
+                <select id="alertCondition">
+                  <option value="above">Mayor o igual</option>
+                  <option value="below">Menor o igual</option>
+                </select>
+              </div>
+              <div class="alerts-field">
+                <label for="alertValue">Valor objetivo (USD)</label>
+                <input type="number" id="alertValue" min="0" step="any" placeholder="Ej: 25000" />
+              </div>
+            </div>
+            <div class="alerts-row alerts-row--options">
+              <label class="alerts-checkbox">
+                <input type="checkbox" id="alertRepeat" checked />
+                Mantener la alerta activa tras dispararse
+              </label>
+            </div>
+            <button type="submit" class="alerts-submit">Guardar alerta</button>
+            <p id="alertFormStatus" class="form-status"></p>
+          </form>
+        </article>
+
+        <article class="alerts-card">
+          <header class="alerts-card__header">
+            <h3>Alertas configuradas</h3>
+            <p>Consulta y gestiona tus alertas en tiempo real.</p>
+          </header>
+          <div id="alertsEmpty" class="alerts-empty">Todavia no has creado alertas.</div>
+          <ul id="alertsList" class="alerts-list"></ul>
+        </article>
+      </div>
+
+      <article class="alerts-card alerts-card--highlight hidden" id="alertsTriggeredPanel">
+        <header class="alerts-card__header">
+          <h3>Alertas recientes</h3>
+          <p>Ultimos disparos registrados.</p>
+        </header>
+        <ul id="alertsTriggeredList" class="alerts-triggered-list"></ul>
+      </article>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+  <script src="../js/principal.js"></script>
+</body>
+</html>

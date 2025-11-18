@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - Monitor Crypto</title>
+  <link rel="stylesheet" href="../css/login.css" />
+</head>
+<body class="auth-body">
+  <div class="auth-layout">
+    <aside class="auth-hero">
+      <span class="auth-logo">Monitor<span>Crypto</span></span>
+      <p class="auth-tagline">Accede a tus paneles, simulaciones y alertas en segundos.</p>
+      <ul class="auth-highlights">
+        <li>Precios sincronizados y analisis de tendencias</li>
+        <li>Alertas locales configurables sin esfuerzo</li>
+        <li>Dashboard personal con notas, tareas y calculadora</li>
+      </ul>
+      <a href="landing.html" class="auth-back">Ver la presentacion completa</a>
+    </aside>
+
+    <main class="auth-card">
+      <h1>Iniciar sesion</h1>
+      <p class="auth-subtitle">Introduce tus credenciales para continuar.</p>
+      <form id="loginForm" autocomplete="off" class="auth-form">
+        <label for="email" class="sr-only">Correo electronico</label>
+        <input type="email" id="email" placeholder="Correo electronico" required />
+
+        <label for="password" class="sr-only">Contrasena</label>
+        <input type="password" id="password" placeholder="Contrasena" required />
+
+        <button type="submit">Entrar</button>
+      </form>
+      <p class="auth-help">No tienes cuenta? <a href="register.html">Registrate aqui</a></p>
+    </main>
+  </div>
+  <script src="../js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monitor Crypto · Bienvenido</title>
+  <link rel="stylesheet" href="../css/landing.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__content">
+      <div class="hero__brand">
+        <span class="logo">Monitor<span>Crypto</span></span>
+        <p class="tagline">Gestiona, analiza y monitoriza tu universo cripto desde un solo lugar.</p>
+      </div>
+      <div class="cta-group">
+        <a href="login.html" class="btn btn-primary">Ir a iniciar sesión</a>
+      </div>
+    </div>
+    <div class="hero__visual">
+      <div class="card">
+        <h2>Tus criptos, bajo control</h2>
+        <p>Seguimiento en tiempo real, análisis históricos, favoritos, alertas y paneles personalizados.</p>
+        <ul>
+          <li>📈 Precios y series históricas desde tu propia base de datos</li>
+          <li>🧮 Simulador de PnL con comisiones e impuestos</li>
+          <li>🗓️ Calendario y notas sincronizadas con MongoDB</li>
+        </ul>
+      </div>
+      <div class="orbit">
+        <span class="planet planet-1"></span>
+        <span class="planet planet-2"></span>
+        <span class="planet planet-3"></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="features">
+    <article class="feature">
+      <h3>Dashboard Inteligente</h3>
+      <p>Notas personales, calculadora, tareas rápidas y temporizador de foco para mantenerte productivo.</p>
+    </article>
+    <article class="feature">
+      <h3>Simulador completo</h3>
+      <p>Calcula el PnL de tus operaciones contemplando comisiones, spreads, impuestos y funding.</p>
+    </article>
+    <article class="feature">
+      <h3>Calendario con notas</h3>
+      <p>Planifica tu estrategia mes a mes y guarda recordatorios asociados a cada día desde MongoDB.</p>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; <span id="currentYear"></span> Monitor Crypto. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro - Monitor Crypto</title>
+  <link rel="stylesheet" href="../css/login.css" />
+</head>
+<body class="auth-body">
+  <div class="auth-layout">
+    <aside class="auth-hero">
+      <span class="auth-logo">Monitor<span>Crypto</span></span>
+      <p class="auth-tagline">Crea tu cuenta y empieza a monitorizar tus criptomonedas con estilo.</p>
+      <ul class="auth-highlights">
+        <li>Simulador PnL con comisiones y objetivos</li>
+        <li>Calendario inteligente con notas sincronizadas</li>
+        <li>Analisis y favoritos siempre actualizados</li>
+      </ul>
+      <a href="landing.html" class="auth-back">Descubrir Monitor Crypto</a>
+    </aside>
+
+    <main class="auth-card">
+      <h1>Crear cuenta</h1>
+      <p class="auth-subtitle">Completa los siguientes datos para registrarte.</p>
+      <form id="registerForm" autocomplete="off" class="auth-form">
+        <label for="nombre" class="sr-only">Nombre</label>
+        <input type="text" id="nombre" placeholder="Nombre" required />
+
+        <label for="apellido" class="sr-only">Apellido</label>
+        <input type="text" id="apellido" placeholder="Apellido" required />
+
+        <label for="dni" class="sr-only">DNI</label>
+        <input type="text" id="dni" placeholder="DNI" required />
+
+        <label for="telefono" class="sr-only">Telefono</label>
+        <input type="text" id="telefono" placeholder="Telefono" required />
+
+        <label for="username" class="sr-only">Nombre de usuario</label>
+        <input type="text" id="username" placeholder="Nombre de usuario" required />
+
+        <label for="email" class="sr-only">Correo electronico</label>
+        <input type="email" id="email" placeholder="Correo electronico" required />
+
+        <label for="password" class="sr-only">Contrasena</label>
+        <input type="password" id="password" placeholder="Contrasena" required />
+
+        <label for="rol" class="sr-only">Rol</label>
+        <select id="rol" required>
+          <option value="cliente" selected>Cliente</option>
+          <option value="admin">Administrador</option>
+        </select>
+
+        <button type="submit">Registrarse</button>
+      </form>
+      <p class="auth-help">Ya tienes cuenta? <a href="login.html">Inicia sesion</a></p>
+    </main>
+  </div>
+  <script src="../js/register.js"></script>
+</body>
+</html>

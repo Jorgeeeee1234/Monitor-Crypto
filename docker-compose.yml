@@ -1,0 +1,123 @@
+version: "3.8"
+
+# Este archivo orquesta todos los servicios de la aplicación Monitor Crypto.
+services:
+  # Base de datos MongoDB para el microservicio Node
+  mongo:
+    image: mongo:6
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand(\"ping\")'"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+
+  # Microservicio de gestión (Node + Express)
+  microservicio-node:
+    build:
+      context: ./MicroservicioNode
+      dockerfile: Dockerfile
+    command: npm start
+    restart: unless-stopped
+    env_file:
+      - ./MicroservicioNode/.env.example
+    ports:
+      - "4001:4001"
+    depends_on:
+      mongo:
+        condition: service_healthy
+    volumes:
+      - ./MicroservicioNode:/app
+      - node_modules:/app/node_modules
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:4001/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # Microservicio de análisis (Python + FastAPI)
+  microservicio-python:
+    build:
+      context: ./MicroservicioPython
+      dockerfile: Dockerfile
+    command: uvicorn app:app --host 0.0.0.0 --port 5002
+    restart: unless-stopped
+    env_file:
+      - ./MicroservicioPython/.env.example
+    ports:
+      - "5002:5002"
+    volumes:
+      - ./MicroservicioPython:/app
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:5002/health')\""
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ./ApiGateway
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: 5000
+      NODE_SERVICE_URL: http://microservicio-node:4001
+      PYTHON_SERVICE_URL: http://microservicio-python:5002
+      NODE_OPENAPI_URL: http://microservicio-node:4001/openapi.json
+      PYTHON_OPENAPI_URL: http://microservicio-python:5002/openapi.json
+    ports:
+      - "5000:5000"
+    depends_on:
+      microservicio-node:
+        condition: service_healthy
+      microservicio-python:
+        condition: service_healthy
+    volumes:
+      - ./ApiGateway:/app
+      - gateway_node_modules:/app/node_modules
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fs http://localhost:5000/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  # Servidor estático para el frontend
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
+    volumes:
+      - ./Web:/usr/share/nginx/html:ro
+    depends_on:
+      api-gateway:
+        condition: service_started
+
+  # Base de datos relacional para analíticas e históricos
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: monitor
+      POSTGRES_PASSWORD: monitorpass
+      POSTGRES_DB: monitorcrypto
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+
+volumes:
+  mongo_data:
+  node_modules:
+  gateway_node_modules:
+  pg_data:
