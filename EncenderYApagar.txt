@@ -50,3 +50,10 @@ Se debe entrar en los .env tanto de ApiGateway como de MicroservicioNode y leer 
 
 Cadena de conexión de mis microservicios: postgresql:
 //monitor:monitorpass@localhost:5432/monitorcrypto
+
+Subido en github en:
+https://github.com/Jorgeeeee1234/Monitor-Crypto
+
+o
+
+https://github.com/Jorgeeeee1234/Monitor-Crypto.git
