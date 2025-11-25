@@ -19,6 +19,7 @@ Para usarlo es válido con descargar el zip de Github, descomprimirlo, abrirlo e
 y hacer estos 2 comandos: 
 
 cd Monitor-Crypto-main
+
 docker compose up --build
 
 Después se te abrirá la app, debes tener en cuenta 3 cosas aqui. 
