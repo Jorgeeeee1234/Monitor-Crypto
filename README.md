@@ -14,6 +14,20 @@ El repositorio se organiza en cuatro carpetas principales:
 | **MicroservicioPython** | Microservicio FastAPI que consulta datos externos (CoinGecko) para precios, detalles y analisis. |
 | **Web** | Frontend estatico (HTML, CSS, JS) que consume la API a traves del Gateway. |
 
+## Antes de poner en marcha el proyecto debes tener en cuenta lo siguiente:
+Para usarlo es válido con descargar el zip de Github, descomprimirlo, abrirlo en Visual Studio Code, abres el terminal
+y hacer estos 2 comandos: 
+
+cd Monitor-Crypto-main
+docker compose up --build
+
+Después se te abrirá la app, debes tener en cuenta 3 cosas aqui. 
+Se pueden hacer cuentas tanto de Administrados como de CLiente desde el Registro para que el usuario pueda probarlo todo con libertad.
+Se deben crear varias cuentas tanto de usuarios normales como admin para poder probar bien todas las funcionalidades de la parte administradora, sino algunas de estas partes estarán incompletas.
+Es posible que al principio no funcione y muestre el error 429 too many request, esto antes no pasaba pero desde que el proyecto esta publico en github es posible que lo hayan utilizado más personas y de ahi que se saturen más las peticiones de datos externos a CoinGecko.
+
+Si te sucede el 3º caso, te recomiento que pruebes varias veces a lo largo de varios minutos, cierra sesion y vuelve a entrar, y muevete por la app y después vuelve al inicio para actualizar los datos Reales de las Criptomonedas.
+
 ## Puesta en marcha rapida con Docker
 
 La forma mas sencilla de probar todos los servicios es mediante Docker Compose.  
@@ -77,3 +91,6 @@ Si prefieres arrancar cada componente manualmente:
 - Guion rapido de despliegue: `README2.txt`.
 
 Con todos los servicios en marcha puedes explorar la API completa desde `http://localhost:5000/docs` y consumir el JSON OpenAPI desde `http://localhost:5000/openapi.json` o directamente desde cada microservicio (`http://localhost:4001/openapi.json`, `http://localhost:5002/openapi.json`).
+
+
+## Importante, lee la sección: "Antes de poner en marcha el proyecto debes tener en cuenta..."
