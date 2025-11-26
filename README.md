@@ -16,7 +16,7 @@ El repositorio se organiza en cuatro carpetas principales:
 
 ## Antes de poner en marcha el proyecto debes tener en cuenta lo siguiente:
 Para usarlo es válido con descargar el zip de Github, descomprimirlo, abrirlo en Visual Studio Code, abres el terminal
-y hacer estos 2 comandos: 
+y hacer estos 2 comandos: (Ten en cuenta que si descargas el proyecto de github puedes hacerlo con el nombre un poco cambiado, tenlo en cuenta a la hora de escribir los comandos en terminal)
 
 cd Monitor-Crypto-main
 
