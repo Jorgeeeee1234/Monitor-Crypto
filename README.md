@@ -11,7 +11,7 @@ El repositorio se organiza en cuatro carpetas principales:
 | --- | --- |
 | **ApiGateway** | Servicio Node.js que actua como proxy inverso hacia los microservicios y agrega la documentacion OpenAPI. |
 | **MicroservicioNode** | Backend Express + MongoDB que gestiona usuarios, alertas, favoritos e historial. |
-| **MicroservicioPython** | Microservicio FastAPI que consulta datos externos (CoinGecko) para precios, detalles y analisis. |
+| **MicroservicioPython** | Microservicio FastAPI + PostgreSQL que consulta datos externos (CoinGecko) para precios, detalles y analisis. |
 | **Web** | Frontend estatico (HTML, CSS, JS) que consume la API a traves del Gateway. |
 
 ## Antes de poner en marcha el proyecto debes tener en cuenta lo siguiente:
